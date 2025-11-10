@@ -30,7 +30,7 @@
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <h2 class="text-center">방명록 리스트</h2>
+  <h2 class="text-center">방명록 리스트!!!!!!!!!</h2>
   <table class="table table-borderless m-0 p-0">
     <tr>
       <td>
