@@ -41,6 +41,12 @@ spring:
       name: admin@green.com
       password: 1234
 
+  # File Upload MaxSize Setting
+  servlet:
+    multipart:
+      enabled: true
+      maxFileSize: 10MB
+      maxRequestSize: 30MB
 
 # Log information Setting
 logging:
