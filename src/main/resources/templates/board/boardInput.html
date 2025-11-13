@@ -5,12 +5,16 @@
       layout:decorate="~{layouts/basicLayout}">
 
 <!-- CSRF 설정 -->
+<!-- csrf 처리를 basicLayout.html에서 해준다.-->
+<!--
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+-->
 
 <th:block layout:fragment="script">
   <script src="/ckeditor/ckeditor.js"></script>
   <script th:inline="javascript">
+    <!--
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
     $(function() {
@@ -18,12 +22,14 @@
         xhr.setRequestHeader(header, token);
       });
     });
+    -->
   </script>
 </th:block>
 
 <div layout:fragment="content" class="container text-center" style="height:830px">
   <h2>글쓰기</h2>
-  <form method="post" enctype="multipart/form-data">
+  <!--<form method="post" enctype="multipart/form-data">-->
+  <form method="post">
     <table class="table table-bordered">
       <tr>
         <th>글쓴이</th>

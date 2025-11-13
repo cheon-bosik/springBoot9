@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "board_reply1")
 @Getter
 @Setter
+//@ToString(onlyExplicitlyIncluded = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +29,7 @@ public class BoardReply {
 
   // 원본글의 PK를 FK로 설정
   @ManyToOne(fetch = FetchType.LAZY)
+  @ToString.Exclude
   @JoinColumn(name = "board_id", referencedColumnName = "board_id")
   private Board board;
 
@@ -35,6 +37,7 @@ public class BoardReply {
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @ToString.Exclude
   @JoinColumn(name = "email", referencedColumnName = "email")
   private Member member;
 

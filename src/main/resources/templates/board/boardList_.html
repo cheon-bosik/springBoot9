@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+                layout:decorate="~{layouts/basicLayout}">
+
+<div layout:fragment="content" class="text-center">
+  <h2>게 시 판 리 스 트</h2>
+  <div class="row mt-3 mb-1">
+    <div class="col text-start">
+      <a th:href="@{boardInput}" class="btn btn-success btn-sm">글쓰기</a>
+    </div>
+    <div class="col text-end">
+      <select name="pageSize" id="pageSize" onchange="pageSizeCheck()">
+        <option>5</option>
+        <option>10</option>
+        <option>15</option>
+        <option>20</option>
+        <option>25</option>
+        <option>30</option>
+      </select>
+    </div>
+  </div>
+  <table class="table table-hover text-center">
+    <tr class="table-secondary">
+      <th>번호</th>
+      <th>글제목</th>
+      <th>글쓴이</th>
+      <th>글쓴날짜</th>
+      <th>조회수(좋아요)</th>
+    </tr>
+    <th:block th:each="board, st : ${boardList}">
+      <tr>
+        <td>[[${st.count}]]</td>
+        <td class="text-start">
+          [[${board.title}]]
+        </td>
+        <td>[[${board.name}]]</td>
+        <td>
+          <span th:text="${board.wDate}"></span>
+        </td>
+        <td>[[${board.readNum}]]([[${board.good}]])</td>
+      </tr>
+    </th:block>
+  </table>
+
+  <!-- 블록페이지 시작 -->
+  <!--
+  <div class="text-center">
+    <ul class="pagination justify-content-center">
+      <th:block th:if="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" th:href="@{boardList(pageSize=${pageSize},pag=0)}">첫페이지</a></li></th:block>
+      <th:block th:if="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" th:href="@{boardList(pageSize=${pageSize},pag=${(curBlock-1)*blockSize+1-1})}">이전블록</a></li></th:block>
+      <th:block th:each="i: ${#numbers.sequence((curBlock*blockSize)+1,(curBlock*blockSize)+blockSize)}">
+        <th:block th:if="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" th:href="@{boardList(pageSize=${pageSize},pag=${i-1})}" th:text="${i}"></a></li></th:block>
+        <th:block th:if="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link text-secondary" th:href="@{boardList(pageSize=${pageSize},pag=${i-1})}" th:text="${i}"></a></li></th:block>
+      </th:block>
+      <th:block th:if="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" th:href="@{boardList(pageSize=${pageSize},pag=${(curBlock+1)*blockSize+1-1})}">다음블록</a></li></th:block>
+      <th:block th:if="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" th:href="@{boardList(pageSize=${pageSize},pag=${totPage-1})}">마지막페이지</a></li></th:block>
+    </ul>
+  </div>
+</div>
+-->
+<!-- 블록페이지 끝 -->
+
+</div>
+
+</html>
