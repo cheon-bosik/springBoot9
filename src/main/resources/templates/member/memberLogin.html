@@ -25,7 +25,8 @@
     <p th:if="${loginErrorMsg}" th:text="${loginErrorMsg}" class="text-danger text-start"></p>
     <div>
       <input type="submit" value="로그인" class="btn btn-success me-2"/>
-      <input type="button" value="회원가입" onclick="location.href='/member/memberJoin'" class="btn btn-primary"/>
+      <input type="button" value="회원가입" onclick="location.href='/member/memberJoin'" class="btn btn-primary me-2"/>
+      <a th:href="@{${kakaoUrl}}"><img src="/images/kakaoLogin.png" height="40px"/></a>
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf?.token}" />
   </form>

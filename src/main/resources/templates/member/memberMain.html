@@ -11,12 +11,39 @@
 </th:block>
 
 <div layout:fragment="content">
-  <h2>정회원 방</h2>
-  <div>(회원명 : [[${session.sName}]] / 등급 : [[${session.strLevel}]])</div>
-  <div>현재 회원 등급 : [[${#authentication.authorities}]]/[[${#authentication.principal.authorities}]]등급</div>
-  <div>현재 로그인 이름(아이디) : [[${#authentication.name}]]/[[${#authentication.principal.username}]]님</div>
-  <div>
-    <img src="/images/6.jpg" width="400px"/>
+  <div class="row">
+    <div class="col">
+      <h2>정회원 방</h2>
+      <div>(회원명 : [[${session.sName}]] / 등급 : [[${session.strLevel}]])</div>
+      <div>현재 회원 등급 : [[${#authentication.authorities}]]/[[${#authentication.principal.authorities}]]등급</div>
+      <div>현재 로그인 이름(아이디) : [[${#authentication.name}]]/[[${#authentication.principal.username}]]님</div>
+      <div>
+        <img src="/images/6.jpg" width="400px"/>
+      </div>
+    </div>
+    <div class="col text-center">
+      <font size="4"><b>신규 메세지(<span class="text-danger">[[${wmCnt}]]</span>건)</b></font>
+      <span style="font-size:11px">...<a href="/webMessage/webMessage">more</a></span>
+      <th:blcok th:if="${wmCnt != 0}">
+        <table class="table table-bordered table-hover text-center m-2">
+          <tr class="table-secondary">
+            <th>번호</th>
+            <th>아이디</th>
+            <th>보낸날짜</th>
+          </tr>
+          <th:block th:each="vo, st : ${webMessageList}">
+            <th:block th:if="${st.count <= 5}">
+              <tr>
+                <td>[[${st.count}]]</td>
+                <td>[[${vo.memberSendId.email}]]</td>
+                <td>[[${#strings.substring(vo.sendDate,0,16)}]]</td>
+              </tr>
+            </th:block>
+          </th:block>
+        </table>
+      </th:blcok>
+      <hr/>
+    </div>
   </div>
 </div>
 

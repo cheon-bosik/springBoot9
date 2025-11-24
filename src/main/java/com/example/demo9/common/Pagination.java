@@ -1,12 +1,18 @@
 package com.example.demo9.common;
 
 import com.example.demo9.entity.Board;
+import com.example.demo9.entity.Member;
+import com.example.demo9.entity.WebMessage;
 import com.example.demo9.repository.BoardRepository;
+import com.example.demo9.repository.MemberRepository;
+import com.example.demo9.repository.WebMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -18,8 +24,11 @@ import java.util.List;
 public class Pagination {
 
   private final BoardRepository boardRepository;
+  private final MemberRepository memberRepository;
+  private final WebMessageRepository webMessageRepository;
 
   public PageVO pagination(PageVO pageVO) {	// 각각의 변수로 받으면 초기값처리를 spring이 자동할수 있으나, 객체로 받으면 개별 문자/객체 자료에는 null이 들어오기에 따로 초기화 작업처리해야함.
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     int pag = pageVO.getPag();
     int pageSize = pageVO.getPageSize() == 0 ? 10 : pageVO.getPageSize();
     //int level = pageVO.getLevel() == 0 ? 99 : pageVO.getLevel();
@@ -53,6 +62,32 @@ public class Pagination {
 
       totRecCnt = (int) page.getTotalElements();
       totPage = page.getTotalPages();
+    }
+    else if(pageVO.getSection().equals("member")) {
+      Page<Member> page = memberRepository.findAll(pageable);
+      List<Member> memberList = page.getContent();
+      pageVO.setMemberList(memberList);
+
+      totRecCnt = (int) page.getTotalElements();
+      totPage = page.getTotalPages();
+    }
+    else if(pageVO.getSection().equals("webMessage")) {
+      String mid =  authentication.getName();
+      List<WebMessage> webMessageList;
+      Page<WebMessage> webMessages = null;
+      //Pageable pageable;
+
+      // 웹메세지에서 사용하는 변수(msgSw) : 앞으로 가야하는 위치 설정 - 0:메세지작성, 1:받은메세지, 2:새메세지, 3:보낸메세지, 4:수신확인, 5:휴지통, 6:메세지내용보기, 9:휴지통비우기)보낸메세지(s), 휴지통(g), 휴지통삭제(x) 표시
+      if(pageVO.getMsgSw() == 1) webMessages = webMessageRepository.findReceivedMessages(mid, pageable);
+      else if(pageVO.getMsgSw() == 2) webMessages = webMessageRepository.findNewMessages(mid, pageable);
+      else if(pageVO.getMsgSw() == 3) webMessages = webMessageRepository.findSendMessages(mid, pageable);
+      else if(pageVO.getMsgSw() == 4) webMessages = webMessageRepository.findReceiveCheckMessages(mid, pageable);
+      else if(pageVO.getMsgSw() == 5) webMessages = webMessageRepository.findWasteBasketMessages(mid, pageable);
+
+      pageVO.setWebMessageList(webMessages.getContent());
+
+      totRecCnt = (int) webMessages.getTotalElements();
+      totPage = webMessages.getTotalPages();
     }
 
     int startIndexNo = pag * pageSize;

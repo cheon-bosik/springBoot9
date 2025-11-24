@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/basicLayout}">
+
+<style layout:fragment="css">
+  #leftWindow {
+    float: left;
+    width: 25%;
+    height: 520px;
+    text-align: center;
+    background-color: #ddd;
+    overflow: auto;
+  }
+  #rightWindow {
+    float: left;
+    width: 75%;
+    height: 520px;
+    text-align: center;
+    background-color: #eee;
+    overflow: auto;
+  }
+  #footerMargin {
+    clear: both;
+    margin: 10px;
+  }
+</style>
+
+<div layout:fragment="content">
+  <h3 class="text-center" style="margin-top:-15px;">☆ 메세지 관리 ☆</h3>
+  <div class="text-start ms-2">(현재접속자:<span class="text-danger">[[${session.sName}]]</span>)</div>
+  <div id="leftWindow">
+    <p><br/></p>
+    <p><a href="webMessage?msgSw=0">메세지작성</a></p>
+    <p><a href="webMessage?msgSw=1">받은메세지</a></p>
+    <p><a href="webMessage?msgSw=2">새메세지</a></p>
+    <p><a href="webMessage?msgSw=3">보낸메세지</a></p>
+    <p><a href="webMessage?msgSw=4">수신확인</a></p>
+    <p><a href="webMessage?msgSw=5">휴지통</a></p>
+    <p><a href="webMessage?msgSw=9">휴지통비우기</a></p>
+  </div>
+  <div id="rightWindow">
+    <th:block th:switch="${pageVO.msgSw}">
+      <th:block th:case="0">
+        <h3 class="mt-2">메세지작성</h3>
+        <th:block th:insert="~{webMessage/wmInput}"></th:block>
+      </th:block>
+      <th:block th:case="1">
+        <h3 class="mt-2">받은메세지</h3>
+        <th:block th:insert="~{webMessage/wmList}"></th:block>
+      </th:block>
+      <th:block th:case="2">
+        <h3 class="mt-2">새메세지</h3>
+        <th:block th:insert="~{webMessage/wmList}"></th:block>
+      </th:block>
+      <th:block th:case="3">
+        <h3 class="mt-2">보낸메세지</h3>
+        <th:block th:insert="~{webMessage/wmList}"></th:block>
+      </th:block>
+      <th:block th:case="4">
+        <h3 class="mt-2">수신확인</h3>
+        <th:block th:insert="~{webMessage/wmList}"></th:block>
+      </th:block>
+      <th:block th:case="5">
+        <h3 class="mt-2">휴지통</h3>
+        <th:block th:insert="~{webMessage/wmList}"></th:block>
+      </th:block>
+      <th:block th:case="6">
+        <h3 class="mt-2">메세지 내용보기</h3>
+        <th:block th:insert="~{webMessage/wmContent}"></th:block>
+      </th:block>
+    </th:block>
+  </div>
+</div>
+
+</html>

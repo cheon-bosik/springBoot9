@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<link rel="stylesheet" type="text/css" href="/css/linkBlue.css"/>
+
+<script>
+  // setTimeout("location.reload()", 1000*10);
+  setInterval(() => {
+    $("#msgList").load(location.href + ' #msgList');
+  }, 1000*10);
+</script>
+
+<style>
+  table {
+    border: 1px solid #ddd !important;
+  }
+</style>
+
+<body>
+  <div id="msgList">
+
+    <!-- 1:받은메세지, 2:새메세지, 3:보낸메세지, 4:수신확인, 5:휴지통 -->
+    <table class="table table-hover">
+      <tr class="table-secondary">
+        <th>번호</th>
+        <th>
+          <th:block th:if="${pageVO.msgSw==1 || pageVO.msgSw==2 || pageVO.msgSw==5}">보낸사람</th:block>
+          <th:block th:if="${pageVO.msgSw==3 || pageVO.msgSw==4}">받은사람</th:block>
+        </th>
+        <th>제목</th>
+        <th>
+          <th:block th:if="${pageVO.msgSw==1 || pageVO.msgSw==2 || pageVO.msgSw==5}">보낸/확인(날짜)</th:block>
+          <th:block th:if="${pageVO.msgSw==3 || pageVO.msgSw==4}">받은날짜</th:block>
+        </th>
+      </tr>
+      <th:block th:each="vo, st : ${pageVO.webMessageList}">
+        <tr>
+          <!--<td>[[${st.count}]]</td>-->
+          <td>[[${pageVO.curScrStartNo-st.index}]]</td>
+          <td>
+            <th:block th:if="${pageVO.msgSw==1 || pageVO.msgSw==2 || pageVO.msgSw==5}">[[${vo.memberSendId.email}]]</th:block>
+            <th:block th:if="${pageVO.msgSw==3 || pageVO.msgSw==4}">[[${vo.memberReceiveId.email}]]</th:block>
+          </td>
+          <td class="text-start">
+            <th:block th:if="${pageVO.msgSw == 4 || pageVO.msgSw == 5}">[[${vo.title}]]</th:block>  <!-- '수신확인/휴지통'은 제목만 보여준다.-->
+            <th:block th:if="${pageVO.msgSw != 4 && pageVO.msgSw != 5}"><a th:href="@{webMessage(msgSw=6,id=${vo.id},preSw=${pageVO.msgSw})}">[[${vo.title}]]</a></th:block>
+            <th:block th:if="${vo.receiveSw == 'n' && pageVO.msgSw != 3 && pageVO.msgSw != 4 && pageVO.msgSw != 5}"><img src="/images/new.gif" width="25px" /></th:block>
+          </td>
+          <td>
+            <th:block th:if="${pageVO.msgSw==1 || pageVO.msgSw==2 || pageVO.msgSw==5}">[[${#strings.substring(vo.sendDate,0,19)}]]</th:block>
+            <th:block th:if="${pageVO.msgSw==3 || pageVO.msgSw==4}">[[${#strings.substring(vo.receiveDate,0,19)}]]</th:block>
+          </td>
+        </tr>
+      </th:block>
+    </table>
+
+    <!-- 블록페이지 시작 -->
+    <div class="text-center">
+      <ul class="pagination justify-content-center pagination-sm">
+        <th:block th:if="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" th:href="@{webMessage(msgSw=${pageVO.msgSw},pageSize=${pageVO.pageSize},pag=0)}">첫페이지</a></li></th:block>
+        <th:block th:if="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" th:href="@{webMessage(msgSw=${pageVO.msgSw},pageSize=${pageVO.pageSize},pag=${(pageVO.curBlock-1)*pageVO.blockSize+1-1})}">이전블록</a></li></th:block>
+        <th:block th:each="i: ${#numbers.sequence((pageVO.curBlock*pageVO.blockSize)+1,(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize)}">
+          <th:block th:if="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" th:href="@{webMessage(msgSw=${pageVO.msgSw},pageSize=${pageVO.pageSize},pag=${i-1})}" th:text="${i}"></a></li></th:block>
+          <th:block th:if="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" th:href="@{webMessage(msgSw=${pageVO.msgSw},pageSize=${pageVO.pageSize},pag=${i-1})}" th:text="${i}"></a></li></th:block>
+        </th:block>
+        <th:block th:if="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" th:href="@{webMessage(msgSw=${pageVO.msgSw},pageSize=${pageVO.pageSize},pag=${(pageVO.curBlock+1)*pageVO.blockSize+1-1})}">다음블록</a></li></th:block>
+        <th:block th:if="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" th:href="@{webMessage(msgSw=${pageVO.msgSw},pageSize=${pageVO.pageSize},pag=${pageVO.totPage-1})}">마지막페이지</a></li></th:block>
+      </ul>
+    </div>
+    <!-- 블록페이지 끝 -->
+
+  </div>
+</body>
+</html>

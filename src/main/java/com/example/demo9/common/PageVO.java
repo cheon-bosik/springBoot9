@@ -1,6 +1,8 @@
 package com.example.demo9.common;
 
 import com.example.demo9.entity.Board;
+import com.example.demo9.entity.Member;
+import com.example.demo9.entity.WebMessage;
 import lombok.Data;
 
 import java.util.List;
@@ -23,10 +25,17 @@ public class PageVO {
 	private String searchString;  // '검색어...'
 	private String searchStr; // '글제목/글쓴이/글내용'
 	private String boardFlag;	// 검색기에서 글내용보기 호출시 사용하는 변수
+  private int msgSw;    // 웹메세지에서 사용하는 변수(앞으로 가야하는 위치 - 0:메세지작성, 1:받은메세지, 2:새메세지, 3:보낸메세지, 4:수신확인, 5:휴지통, 6:메세지내용보기, 9:휴지통비우기)
+  private int preSw;    // 웹메세지에서 사용하는 변수(현재 위치했넌곳의 번호)
 	
 	private int level;	// 회원 등급(초기값:99 - 비회원)
 
   private List<Board> boardList;  // 게시판의 글 리스트를 저장하기위한 변수
 
+  private List<Member> memberList;
+
+  private List<WebMessage> webMessageList;
+
   private boolean isOwner;    // 본인 인증여부를 확인하기위한 변수
+
 }

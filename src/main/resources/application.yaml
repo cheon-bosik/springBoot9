@@ -57,3 +57,12 @@ logging:
           descriptor:
             sql: trace
 
+# kakao login을 위한 key setting
+kakao:
+  client:
+    id: 8c557cb3e33dd1208a260b62edb5505a
+    secret: 5937b18f57c0c7722e489c3448f9236e
+  redirect:
+    url: http://localhost:9099/member/kakaoLogin
+  logout:
+    url: http://localhost:9099/member/kakaoLogout

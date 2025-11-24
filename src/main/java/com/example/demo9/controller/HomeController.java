@@ -62,4 +62,9 @@ public class HomeController {
     }
     out.flush();
   }
+
+  @GetMapping("/error/accessDenied")
+  public String accessDeniedGet() {
+    return "redirect:/message/accessDenied";
+  }
 }

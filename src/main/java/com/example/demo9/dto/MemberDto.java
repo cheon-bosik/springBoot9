@@ -1,6 +1,7 @@
 package com.example.demo9.dto;
 
 import com.example.demo9.constant.Role;
+import com.example.demo9.constant.UserDel;
 import com.example.demo9.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
@@ -37,6 +38,8 @@ public class MemberDto {
 
   private Role role;
 
+  private UserDel userDel;
+
   public static MemberDto entityToDto(Optional<Member> opMember) {
     return MemberDto.builder()
             .id(opMember.get().getId())
@@ -45,6 +48,7 @@ public class MemberDto {
             .password(opMember.get().getPassword())
             .address(opMember.get().getAddress())
             .role(opMember.get().getRole())
+            .userDel(opMember.get().getUserDel())
             .build();
   }
 

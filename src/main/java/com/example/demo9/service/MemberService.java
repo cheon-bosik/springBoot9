@@ -1,5 +1,6 @@
 package com.example.demo9.service;
 
+import com.example.demo9.constant.UserDel;
 import com.example.demo9.entity.Member;
 import com.example.demo9.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +38,24 @@ public class MemberService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Optional<Member> opMember = Optional.ofNullable(memberRepository.findByEmail(email)
+    //Optional<Member> opMember = Optional.ofNullable(memberRepository.findByEmail(email)
+    /*
+    Optional<Member> opMember = Optional.ofNullable((Member) memberRepository.findByEmailAndUserDel(email, UserDel.NO)
             .orElseThrow(() -> new UsernameNotFoundException("회원 정보가 없습니다." + email)));
 
     return User.builder()
             .username(opMember.get().getEmail())
             .password(opMember.get().getPassword())
             .roles(opMember.get().getRole().toString())
+            .build();
+    */
+    Member member = (Member) memberRepository.findByEmailAndUserDel(email, UserDel.NO)
+            .orElseThrow(() -> new UsernameNotFoundException("회원 정보가 없습니다." + email));
+
+    return User.builder()
+            .username(member.getEmail())
+            .password(member.getPassword())
+            .roles(member.getRole().toString())
             .build();
   }
 }
